@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>gastos-app</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="/src/main.js"></script>
+    <!-- index.html, dentro del <body> -->
+    <h2>Tarjetas</h2>
+    <form id="form-tarjeta">
+      <input type="text" id="alias" placeholder="Alias (ej. Visa Bancolombia)" required />
+      <input type="text" id="banco" placeholder="Banco" required />
+      <input type="number" id="cupo" placeholder="Cupo (opcional)" />
+      <button type="submit">Agregar tarjeta</button>
+    </form>
+
+    <ul id="lista-tarjetas"></ul>
+
+    <script type="module" src="./src/main.js"></script>
+    
+    <h2>Movimientos</h2>
+    <form id="form-movimiento">
+      <select id="tipo">
+        <option value="egreso">Egreso</option>
+        <option value="ingreso">Ingreso</option>
+      </select>
+      <input type="text" id="categoria" placeholder="Categoría (ej. mercado, salario)" required />
+      <label for="fecha">Fecha del movimiento:</label>
+      <input type="date" id="fecha" required />
+      <input type="text" id="descripcion" placeholder="Descripción (ej. Carnes Don Juan)" />
+      <select id="tarjeta"></select>
+
+      <!-- Sección para agregar items -->
+      <div>
+        <input type="text" id="item-nombre" placeholder="Item (ej. carne de res)" />
+        <input type="number" id="item-precio" placeholder="Precio" />
+        <button type="button" id="btn-agregar-item">+ Agregar item</button>
+      </div>
+      <ul id="lista-items-temporal"></ul>
+      <p>Total: $<span id="total-temporal">0</span></p>
+
+      <!-- Solo se usa si NO hay items (ej. salario, arriendo) -->
+      <input type="number" id="monto-manual" placeholder="Monto directo sin items" />
+
+      <button type="submit">Guardar movimiento</button>
+    </form>
+
+<ul id="lista-movimientos"></ul>
+
+<h2>Resumen mensual</h2>
+<label for="selector-mes">Mes a consultar:</label>
+<input type="month" id="selector-mes" />
+
+<p>Ingresos del mes: $<span id="total-ingresos">0</span></p>
+<p>Egresos del mes: $<span id="total-egresos">0</span></p>
+<p>Balance del mes: $<span id="balance-mes">0</span></p>
+
+<ul id="lista-movimientos-mes"></ul>
+
+<h2>Deudas</h2>
+<form id="form-deuda">
+  <select id="deuda-tipo">
+    <option value="compra_credito">Compra a crédito</option>
+    <option value="prestamo_personal">Préstamo personal</option>
+  </select>
+  <input type="text" id="deuda-descripcion" placeholder="Descripción (ej. Celular Samsung)" required />
+  <input type="text" id="deuda-acreedor" placeholder="Acreedor (ej. Bancolombia o Mi hermano)" required />
+  <input type="number" id="deuda-monto-total" placeholder="Monto total" required />
+  <input type="number" id="deuda-numero-cuotas" placeholder="Número de cuotas" required />
+  <input type="number" id="deuda-tasa-interes" placeholder="Tasa de interés % (opcional)" />
+  <label for="deuda-fecha-inicio">Fecha de inicio de la deuda:</label>
+  <input type="date" id="deuda-fecha-inicio" required />
+  <input type="number" id="deuda-dia-pago" placeholder="Día de pago (ej. 5)" />
+  <select id="deuda-tarjeta"></select>
+  <button type="submit">Crear deuda</button>
+</form>
+<ul id="lista-deudas"></ul>
+
+<h2>Traslados</h2>
+<form id="form-traslado">
+  <select type="text" id="cuenta-origen" placeholder="Cuenta de origen" required></select>
+  <select type="text" id="cuenta-destino" placeholder="Cuenta destino" required></select>
+  <input type="number" id="monto-traslado" placeholder="Monto" required>
+  <label for="fecha-traslado">Fecha del traslado:</label>
+  <input type="date" id="fecha-traslado" required>
+  <input type="text" id="nota-traslado" placeholder="Nota sobre el traslado">
+  <button type="submit">Realizar traslado</button>
+</form>
+<ul id="lista-traslados"></ul>
+
+<button id="btn-login">Iniciar sesión con Google</button>
+<button id="btn-logout" style="display: none">Cerrar sesión</button>
+<p id="usuario-actual"></p>
+  </body>
+</html>
