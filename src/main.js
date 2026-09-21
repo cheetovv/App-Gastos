@@ -16,6 +16,9 @@ import { signInWithPopup, signOut, onAuthStateChanged } from "firebase/auth";
 let itemsActuales = [];
 let idTarjetaEnEdicion = null;
 let idMovimientoEnEdicion = null;
+let cantidadVisibleMovimientos = 3;
+let cantidadVisibleDeudas = 3;
+let cantidadVisibleTraslados = 3;
 
 // ── REFERENCIAS AL DOM ───────────────────────────────────
 // Tarjetas
@@ -28,6 +31,7 @@ const listaMovimientos = document.getElementById("lista-movimientos");
 const listaItemsTemp = document.getElementById("lista-items-temporal");
 const totalTemp = document.getElementById("total-temporal");
 const selectTarjeta = document.getElementById("tarjeta");
+const btnVerMasMovimientos = document.getElementById("btn-ver-mas-movimientos");
 
 // Resumen mensual
 const selectorMes = document.getElementById("selector-mes");
@@ -40,10 +44,12 @@ const balanceMes = document.getElementById("balance-mes");
 const formDeuda = document.getElementById("form-deuda");
 const listaDeudas = document.getElementById("lista-deudas");
 const selectTarjetaDeuda = document.getElementById("deuda-tarjeta");
+const btnVerMasDeudas = document.getElementById("btn-ver-mas-deudas");
 
 // Traslados
 const formTraslado = document.getElementById("form-traslado");
 const listaTraslados = document.getElementById("lista-traslados");
+const btnVerMasTraslados = document.getElementById("btn-ver-mas-traslados");
 
 // Auth
 const btnLogin = document.getElementById("btn-login");
@@ -70,7 +76,8 @@ async function cargarSelectTarjetas() {
 // ── FUNCIONES: MOVIMIENTOS ───────────────────────────────
 async function mostrarMovimientos() {
   const movimientos = await obtenerMovimientos();
-  renderMovimientos(movimientos, listaMovimientos);
+  renderMovimientos(movimientos.slice(0, cantidadVisibleMovimientos), listaMovimientos);
+  actualizarBotonVerMas(btnVerMasMovimientos, movimientos.length, cantidadVisibleMovimientos);
 }
 
 // ── FUNCIONES: RESUMEN MENSUAL ───────────────────────────
@@ -89,7 +96,8 @@ async function mostrarResumenMes() {
 // ── FUNCIONES: DEUDAS ────────────────────────────────────
 async function mostrarDeudas() {
   const deudas = await obtenerDeudas();
-  renderDeudas(deudas, listaDeudas);
+  renderDeudas(deudas.slice(0, cantidadVisibleDeudas), listaDeudas);
+  actualizarBotonVerMas(btnVerMasDeudas, deudas.length, cantidadVisibleDeudas);
 }
 
 async function cargarSelectTarjetaDeuda() {
@@ -106,7 +114,8 @@ async function cargarSelectTarjetaDeuda() {
 // ── FUNCIONES: TRASLADOS ─────────────────────────────────
 async function mostrarTraslados() {
   const traslados = await obtenerTraslados();
-  renderTraslados(traslados, listaTraslados);
+  renderTraslados(traslados.slice(0, cantidadVisibleTraslados), listaTraslados);
+  actualizarBotonVerMas(btnVerMasTraslados, traslados.length, cantidadVisibleTraslados);
 }
 
 async function cargarSelectsTraslado() {
@@ -115,6 +124,17 @@ async function cargarSelectsTraslado() {
   document.getElementById("cuenta-origen").innerHTML = opciones;
   document.getElementById("cuenta-destino").innerHTML = opciones;
 }
+
+// ── FUNCIONES: COMPARTIDAS
+function actualizarBotonVerMas(boton, totalElementos, cantidadVisible) {
+  if (totalElementos <= 3) {
+    boton.style.display = "none";
+    return;
+  }
+  boton.style.display = "inline";
+  boton.textContent = totalElementos > cantidadVisible ? "Ver más" : "Ver menos";
+}
+
 
 // ── LISTENERS: TARJETAS ──────────────────────────────────
 listaTarjetas.addEventListener("click", async (evento) => {
@@ -170,6 +190,13 @@ document.getElementById("btn-agregar-item").addEventListener("click", () => {
 
   document.getElementById("item-nombre").value = "";
   document.getElementById("item-precio").value = "";
+});
+
+btnVerMasMovimientos.addEventListener("click", () => {
+  cantidadVisibleMovimientos = btnVerMasMovimientos.textContent === "Ver más"
+    ? cantidadVisibleMovimientos + 3
+    : 3;
+  mostrarMovimientos();
 });
 
 listaItemsTemp.addEventListener("click", (evento) => {
@@ -264,6 +291,13 @@ formDeuda.addEventListener("submit", async (evento) => {
   mostrarDeudas();
 });
 
+btnVerMasDeudas.addEventListener("click", () => {
+  cantidadVisibleDeudas = btnVerMasDeudas.textContent === "Ver más"
+    ? cantidadVisibleDeudas + 3
+    : 3;
+  mostrarDeudas();
+});
+
 listaDeudas.addEventListener("click", async (evento) => {
   const boton = evento.target;
 
@@ -303,6 +337,13 @@ formTraslado.addEventListener("submit", async (evento) => {
 
   await crearTraslado(nuevoTraslado);
   formTraslado.reset();
+  mostrarTraslados();
+});
+
+btnVerMasTraslados.addEventListener("click", () => {
+  cantidadVisibleTraslados = btnVerMasTraslados.textContent === "Ver más"
+    ? cantidadVisibleTraslados + 3
+    : 3;
   mostrarTraslados();
 });
 
