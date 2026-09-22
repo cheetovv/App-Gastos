@@ -1,0 +1,158 @@
+:root {
+  --ink: #14201c;
+  --panel: #1d2b25;
+  --panel-2: #24352d;
+  --text: #e8e4d9;
+  --text-muted: #9ca89e;
+  --gold: #c9a227;
+  --egreso: #c15b4a;
+  --ingreso: #6e9b6b;
+  --border: rgba(232, 228, 217, 0.14);
+
+  --heading: 'Spectral', serif;
+  --sans: 'Work Sans', sans-serif;
+  --mono: 'IBM Plex Mono', monospace;
+
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 1.25rem 1rem 3rem;
+  max-width: 480px;
+  margin-inline: auto;
+  background: var(--ink);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+h2 {
+  font-family: var(--heading);
+  font-weight: 600;
+  font-size: 1.4rem;
+  margin: 2rem 0 0.75rem;
+  color: var(--text);
+}
+
+h2:first-of-type {
+  margin-top: 0;
+}
+
+h3 {
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: 0.8rem;
+  text-transform: none;
+  color: var(--text-muted);
+  margin: 1.5rem 0 0.5rem;
+  padding-bottom: 0.3rem;
+  border-bottom: 1px solid var(--border);
+}
+
+label {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-bottom: 0.25rem;
+}
+
+input, select {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 0.95rem;
+  padding: 0.6rem 0.7rem;
+  margin: 0 0.4rem 0.5rem 0;
+}
+
+input::placeholder {
+  color: var(--text-muted);
+}
+
+button {
+  background: var(--gold);
+  color: var(--ink);
+  border: none;
+  border-radius: 6px;
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 0.6rem 1rem;
+  cursor: pointer;
+  margin-bottom: 0.75rem;
+}
+
+
+button:hover {
+  opacity: 0.9;
+}
+
+/* Botones secundarios: Editar, Borrar, Ver más */
+li button {
+  background: transparent;
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+  font-weight: 400;
+  font-size: 0.8rem;
+  padding: 0.3rem 0.6rem;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+li {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.7rem 0 0.7rem 0.8rem;
+  border-left: 2px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  font-size: 0.9rem;
+}
+
+li .info {
+  flex: 1;
+  min-width: 0;
+}
+
+li .acciones {
+  display: flex;
+  gap: 0.4rem;
+  flex-shrink: 0;
+}
+
+li:last-of-type {
+  border-bottom: none;
+}
+
+li button {
+  margin-bottom: 0; /* dentro del li, el gap de .acciones ya separa los botones */
+}
+
+
+/* Los montos de dinero: monoespaciados, alineados a la derecha */
+.monto {
+  font-family: var(--mono);
+  margin-left: auto;
+  font-weight: 500;
+}
+
+.monto.ingreso {
+  color: var(--ingreso);
+}
+
+.monto.egreso {
+  color: var(--egreso);
+}

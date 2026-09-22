@@ -2,8 +2,13 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <link rel="stylesheet" href="style.css">
     <link rel="icon" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Spectral:wght@400;600&family=Work+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
     <title>gastos-app</title>
   </head>
   <body>
@@ -18,6 +23,7 @@
       <button type="submit">Agregar tarjeta</button>
     </form>
 
+    <h3>Tus tarjetas</h3>
     <ul id="lista-tarjetas"></ul>
 
     <script type="module" src="./src/main.js"></script>
@@ -49,6 +55,7 @@
       <button type="submit">Guardar movimiento</button>
     </form>
 
+<h3>Lista de movimientos</h3>
 <ul id="lista-movimientos"></ul>
 <button id="btn-ver-mas-movimientos">Ver más</button>
 
@@ -80,6 +87,8 @@
   <select id="deuda-tarjeta"></select>
   <button type="submit">Crear deuda</button>
 </form>
+
+<h3>Historial de deudas</h3>
 <ul id="lista-deudas"></ul>
 <button id="btn-ver-mas-deudas">Ver más</button>
 
@@ -93,6 +102,8 @@
   <input type="text" id="nota-traslado" placeholder="Nota sobre el traslado">
   <button type="submit">Realizar traslado</button>
 </form>
+
+<h3>Historial de traslados</h3>
 <ul id="lista-traslados"></ul>
 <button id="btn-ver-mas-traslados">Ver más</button><br>
 
