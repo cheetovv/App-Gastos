@@ -10,3 +10,7 @@ export function calcularTotalesDelMes(movimientos) {
 
   return { ingresos, egresos, balance: ingresos - egresos };
 }
+
+export function formatearMonto(numero) {
+  return numero.toLocaleString('es-CO');
+}

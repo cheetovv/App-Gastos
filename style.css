@@ -156,3 +156,27 @@ li button {
 .monto.egreso {
   color: var(--egreso);
 }
+
+@media (min-width: 768px) {
+  body {
+    max-width: 760px;
+    padding-top: 2rem;
+  }
+
+  h2 {
+    font-size: 1.6rem;
+  }
+
+  input, select {
+    padding: 0.7rem 0.9rem;
+  }
+
+  li {
+    padding: 0.85rem 0 0.85rem 1rem;
+  }
+
+  li button:hover {
+    background: var(--panel-2);
+    color: var(--text);
+  }
+}

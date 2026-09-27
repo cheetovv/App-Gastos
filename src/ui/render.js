@@ -1,4 +1,6 @@
 // src/ui/render.js
+import { formatearMonto } from "../utils/calculos";
+
 export function renderTarjetas(tarjetas, contenedor) {
   contenedor.innerHTML = "";
   tarjetas.forEach((tarjeta) => {
@@ -22,7 +24,7 @@ export function renderTraslados(traslados, contenedor){
     const li = document.createElement("li");
     li.innerHTML = `
       <div class="info">
-        ${traslado.cuentaOrigen} => ${traslado.cuentaDestino} : $${traslado.monto} (${traslado.fecha})
+        ${traslado.cuentaOrigen} => ${traslado.cuentaDestino} : $${formatearMonto(traslado.monto)} (${traslado.fecha})
       </div>
     `;
     contenedor.appendChild(li); 
@@ -34,7 +36,7 @@ export function renderItemsTemporal(items, contenedor, totalElemento) {
   let total = 0;
   items.forEach((item, indice) => {
     const li = document.createElement("li");
-    li.innerHTML = `${item.nombre} - $${item.precio} <button data-indice="${indice}">Quitar</button>`;
+    li.innerHTML = `${item.nombre} - $${formatearMonto(item.precio)} <button data-indice="${indice}">Quitar</button>`;
     contenedor.appendChild(li);
     total += item.precio;
   });
@@ -49,7 +51,7 @@ export function renderMovimientos(movimientos, contenedor) {
     li.innerHTML = `
     <div class="info">
         ${mov.fecha} | ${mov.tipo} | ${mov.categoria}
-        <span class="monto ${claseMonto}">$${mov.monto}</span>
+        <span class="monto ${claseMonto}">$${formatearMonto(mov.monto)}</span>
       </div>
       <div class="acciones">
         <button data-accion="editar" data-id="${mov.id}">Editar</button>
@@ -70,7 +72,8 @@ export function renderDeudas(deudas, contenedor) {
     const li = document.createElement("li");
     li.innerHTML = `
       <div class="info">
-        ${deuda.descripcion} (${deuda.acreedor}) | Cuota: $${deuda.valorCuota.toFixed(0)} | Pagadas: ${deuda.cuotasPagadas}/${deuda.numeroCuotas} | Saldo: $${saldoPendiente.toFixed(0)}
+        ${deuda.descripcion} (${deuda.acreedor}) | Cuota: $${formatearMonto(deuda.valorCuota)} | Pagadas: ${deuda.cuotasPagadas}/${deuda.numeroCuotas} | Saldo: $${formatearMonto(saldoPendiente)}
+
       </div>
       <div class="acciones">
         ${cuotasCompletas ? "<strong>PAGADA</strong>" : `<button data-accion="pagar-cuota" data-id="${deuda.id}">Pagar cuota</button>`}
