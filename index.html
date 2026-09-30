@@ -12,103 +12,137 @@
     <title>gastos-app</title>
   </head>
   <body>
+
+    <button id="toggle-vista">Cambiar vista</button>
+    <button id="btn-login">Iniciar sesión con Google</button>
+    <button id="btn-logout" style="display: none">Cerrar sesión</button>
+    <p id="usuario-actual"></p>
+
     <div id="app"></div>
     <script type="module" src="/src/main.js"></script>
-    <!-- index.html, dentro del <body> -->
-    <h2>Tarjetas</h2>
-    <form id="form-tarjeta">
-      <input type="text" id="alias" placeholder="Alias (ej. Visa Bancolombia)" required />
-      <input type="text" id="banco" placeholder="Banco" required />
-      <input type="number" id="cupo" placeholder="Cupo (opcional)" />
-      <button type="submit">Agregar tarjeta</button>
-    </form>
 
+    <div class="solo-resumen">
+      <h2>Resumen</h2>
+      <div class="balance-grande">
+        <p class="balance-label">Balance de este mes</p>
+        <p class="balance-cifra" id="balance-resumen">$0</p>
+      </div>
+
+      <h3>Tus tarjetas</h3>
+      <div class="tarjetas-scroll" id="tarjetas-scroll"></div>
+    </div>
+
+    <div class="solo-resumen acciones-rapidas">
+      <button data-abrir-panel="panel-form-movimiento">+ Movimiento</button>
+      <button data-abrir-panel="panel-form-tarjeta">+ Tarjeta</button>
+      <button data-abrir-panel="panel-form-deuda">+ Deuda</button>
+      <button data-abrir-panel="panel-form-traslado">+ Traslado</button>
+    </div>
+
+    
+    <!-- index.html, dentro del <body> -->
+    <div  class="panel-formulario solo-completa" id="panel-form-tarjeta">
+      <h2>Tarjetas</h2>
+      <form id="form-tarjeta">
+        <input type="text" id="alias" placeholder="Alias (ej. Visa Bancolombia)" required />
+        <input type="text" id="banco" placeholder="Banco" required />
+        <input type="number" id="cupo" placeholder="Cupo (opcional)" />
+        <button type="submit">Agregar tarjeta</button>
+      </form>
+    
     <h3>Tus tarjetas</h3>
     <ul id="lista-tarjetas"></ul>
+    <button type="button" class="btn-cerrar-panel">Cerrar</button>
+    </div>
 
     <script type="module" src="./src/main.js"></script>
     
-    <h2>Movimientos</h2>
-    <form id="form-movimiento">
-      <select id="tipo">
-        <option value="egreso">Egreso</option>
-        <option value="ingreso">Ingreso</option>
-      </select>
-      <input type="text" id="categoria" placeholder="Categoría (ej. mercado, salario)" required />
-      <label for="fecha">Fecha del movimiento:</label>
-      <input type="date" id="fecha" required />
-      <input type="text" id="descripcion" placeholder="Descripción (ej. Carnes Don Juan)" />
-      <select id="tarjeta"></select>
-
-      <!-- Sección para agregar items -->
-      <div>
-        <input type="text" id="item-nombre" placeholder="Item (ej. carne de res)" />
-        <input type="number" id="item-precio" placeholder="Precio" />
-        <button type="button" id="btn-agregar-item">+ Agregar item</button>
-      </div>
-      <ul id="lista-items-temporal"></ul>
-      <p>Total: $<span id="total-temporal">0</span></p>
-
-      <!-- Solo se usa si NO hay items (ej. salario, arriendo) -->
-      <input type="number" id="monto-manual" placeholder="Monto directo sin items" />
-
-      <button type="submit">Guardar movimiento</button>
-    </form>
+    <div  class="panel-formulario solo-completa" id="panel-form-movimiento">
+      <h2>Movimientos</h2>
+      <form id="form-movimiento">
+        <select id="tipo">
+          <option value="egreso">Egreso</option>
+          <option value="ingreso">Ingreso</option>
+        </select>
+        <input type="text" id="categoria" placeholder="Categoría (ej. mercado, salario)" required />
+        <label for="fecha">Fecha del movimiento:</label>
+        <input type="date" id="fecha" required />
+        <input type="text" id="descripcion" placeholder="Descripción (ej. Carnes Don Juan)" />
+        <select id="tarjeta"></select>
+        <!-- Sección para agregar items -->
+        <div>
+          <input type="text" id="item-nombre" placeholder="Item (ej. carne de res)" />
+          <input type="number" id="item-precio" placeholder="Precio" />
+          <button type="button" id="btn-agregar-item">+ Agregar item</button>
+        </div>
+        <ul id="lista-items-temporal"></ul>
+        <p>Total: $<span id="total-temporal">0</span></p>
+        <!-- Solo se usa si NO hay items (ej. salario, arriendo) -->
+        <input type="number" id="monto-manual" placeholder="Monto directo sin items" />
+        <button type="submit">Guardar movimiento</button>
+      </form>
+      <button type="button" class="btn-cerrar-panel">Cerrar</button>
+    </div>
 
 <h3>Lista de movimientos</h3>
 <ul id="lista-movimientos"></ul>
 <button id="btn-ver-mas-movimientos">Ver más</button>
 
-<h2>Resumen mensual</h2>
-<label for="selector-mes">Mes a consultar:</label>
-<input type="month" id="selector-mes" />
+<div class="solo-completa">
+  <h2>Resumen mensual</h2>
+  <label for="selector-mes">Mes a consultar:</label>
+  <input type="month" id="selector-mes" />
+  
+  <p>Ingresos del mes: $<span id="total-ingresos">0</span></p>
+  <p>Egresos del mes: $<span id="total-egresos">0</span></p>
+  <p>Balance del mes: $<span id="balance-mes">0</span></p>
+  
+  <ul id="lista-movimientos-mes"></ul>
+</div>
 
-<p>Ingresos del mes: $<span id="total-ingresos">0</span></p>
-<p>Egresos del mes: $<span id="total-egresos">0</span></p>
-<p>Balance del mes: $<span id="balance-mes">0</span></p>
 
-<ul id="lista-movimientos-mes"></ul>
-
-
-<h2>Deudas</h2>
-<form id="form-deuda">
-  <select id="deuda-tipo">
-    <option value="compra_credito">Compra a crédito</option>
-    <option value="prestamo_personal">Préstamo personal</option>
-  </select>
-  <input type="text" id="deuda-descripcion" placeholder="Descripción (ej. Celular Samsung)" required />
-  <input type="text" id="deuda-acreedor" placeholder="Acreedor (ej. Bancolombia o Mi hermano)" required />
-  <input type="number" id="deuda-monto-total" placeholder="Monto total" required />
-  <input type="number" id="deuda-numero-cuotas" placeholder="Número de cuotas" required />
-  <input type="number" id="deuda-tasa-interes" placeholder="Tasa de interés % (opcional)" />
-  <label for="deuda-fecha-inicio">Fecha de inicio de la deuda:</label>
-  <input type="date" id="deuda-fecha-inicio" required />
-  <input type="number" id="deuda-dia-pago" placeholder="Día de pago (ej. 5)" />
-  <select id="deuda-tarjeta"></select>
-  <button type="submit">Crear deuda</button>
-</form>
+<div  class="panel-formulario solo-completa" id="panel-form-deuda">
+  <h2>Deudas</h2>
+  <form id="form-deuda">
+    <select id="deuda-tipo">
+      <option value="compra_credito">Compra a crédito</option>
+      <option value="prestamo_personal">Préstamo personal</option>
+    </select>
+    <input type="text" id="deuda-descripcion" placeholder="Descripción (ej. Celular Samsung)" required />
+    <input type="text" id="deuda-acreedor" placeholder="Acreedor (ej. Bancolombia o Mi hermano)" required />
+    <input type="number" id="deuda-monto-total" placeholder="Monto total" required />
+    <input type="number" id="deuda-numero-cuotas" placeholder="Número de cuotas" required />
+    <input type="number" id="deuda-tasa-interes" placeholder="Tasa de interés % (opcional)" />
+    <label for="deuda-fecha-inicio">Fecha de inicio de la deuda:</label>
+    <input type="date" id="deuda-fecha-inicio" required />
+    <input type="number" id="deuda-dia-pago" placeholder="Día de pago (ej. 5)" />
+    <select id="deuda-tarjeta"></select>
+    <button type="submit">Crear deuda</button>
+  </form>
+  <button type="button" class="btn-cerrar-panel">Cerrar</button>
+</div>
 
 <h3>Historial de deudas</h3>
 <ul id="lista-deudas"></ul>
 <button id="btn-ver-mas-deudas">Ver más</button>
 
-<h2>Traslados</h2>
-<form id="form-traslado">
-  <select type="text" id="cuenta-origen" placeholder="Cuenta de origen" required></select>
-  <select type="text" id="cuenta-destino" placeholder="Cuenta destino" required></select>
-  <input type="number" id="monto-traslado" placeholder="Monto" required>
-  <label for="fecha-traslado">Fecha del traslado:</label>
-  <input type="date" id="fecha-traslado" required>
-  <input type="text" id="nota-traslado" placeholder="Nota sobre el traslado">
-  <button type="submit">Realizar traslado</button>
-</form>
+<div  class="panel-formulario solo-completa" id="panel-form-traslado">
+  <h2>Traslados</h2>
+  <form id="form-traslado">
+    <select type="text" id="cuenta-origen" placeholder="Cuenta de origen" required></select>
+    <select type="text" id="cuenta-destino" placeholder="Cuenta destino" required></select>
+    <input type="number" id="monto-traslado" placeholder="Monto" required>
+    <label for="fecha-traslado">Fecha del traslado:</label>
+    <input type="date" id="fecha-traslado" required>
+    <input type="text" id="nota-traslado" placeholder="Nota sobre el traslado">
+    <button type="submit">Realizar traslado</button>
+  </form>
+  <button type="button" class="btn-cerrar-panel">Cerrar</button>
+</div>
 
 <h3>Historial de traslados</h3>
 <ul id="lista-traslados"></ul>
 <button id="btn-ver-mas-traslados">Ver más</button><br>
 
-<button id="btn-login">Iniciar sesión con Google</button>
-<button id="btn-logout" style="display: none">Cerrar sesión</button>
-<p id="usuario-actual"></p>
   </body>
 </html>

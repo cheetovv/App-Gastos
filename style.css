@@ -16,6 +16,66 @@
   color-scheme: dark;
 }
 
+body[data-vista="completa"] .solo-resumen { display: none; }
+body[data-vista="resumen"] .solo-completa { display: none; }
+
+.balance-grande {
+  padding: 1.25rem;
+  background: var(--panel);
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.balance-label {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin: 0 0 0.3rem;
+}
+
+.balance-cifra {
+  font-family: var(--mono);
+  font-size: 1.8rem;
+  color: var(--gold);
+  margin: 0;
+}
+
+.tarjetas-scroll {
+  display: flex;
+  gap: 0.6rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+}
+
+.tarjeta-mini {
+  flex-shrink: 0;
+  min-width: 130px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.7rem;
+}
+
+.acciones-rapidas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
+
+.acciones-rapidas button { margin-bottom: 0; }
+
+body[data-vista="resumen"] .panel-formulario.abierto {
+  display: block;
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  overflow-y: auto;
+  background: var(--ink);
+  padding: 1.25rem max(1rem, calc((100vw - 480px) / 2)) 3rem;
+}
+
+body[data-vista="completa"] .btn-cerrar-panel { display: none; }
+
 * {
   box-sizing: border-box;
 }

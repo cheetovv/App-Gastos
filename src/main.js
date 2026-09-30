@@ -11,8 +11,9 @@ import { renderTarjetas, renderMovimientos, renderItemsTemporal, renderDeudas, r
 import { calcularTotalesDelMes } from "./utils/calculos.js";
 import { auth, proveedorGoogle } from "./firebase-config.js";
 import { signInWithPopup, signOut, onAuthStateChanged } from "firebase/auth";
+import { formatearMonto } from "./utils/calculos.js";
 
-// ── ESTADO EN MEMORIA ────────────────────────────────────
+// ── ESTADO EN MEMORIA ────────────────────────────────────z
 let itemsActuales = [];
 let idTarjetaEnEdicion = null;
 let idMovimientoEnEdicion = null;
@@ -56,10 +57,27 @@ const btnLogin = document.getElementById("btn-login");
 const btnLogout = document.getElementById("btn-logout");
 const usuarioActual = document.getElementById("usuario-actual");
 
+
+// FUNCIONES: MODO DE VISTA 
+
+
+function determinarVistaInicial() {
+  const esDesktop = window.matchMedia("(min-width: 768px)").matches;
+  return esDesktop ? "resumen" : "completa";
+}
+
+document.body.dataset.vista = determinarVistaInicial();
+
+
+
+
 // ── FUNCIONES: TARJETAS ──────────────────────────────────
 async function mostrarTarjetas() {
   const tarjetas = await obtenerTarjetas();
   renderTarjetas(tarjetas, listaTarjetas);
+  document.getElementById("tarjetas-scroll").innerHTML = tarjetas
+    .map((t) => `<div class="tarjeta-mini">${t.alias}<br><small>${t.banco}</small></div>`)
+    .join("");
 }
 
 async function cargarSelectTarjetas() {
@@ -78,6 +96,12 @@ async function mostrarMovimientos() {
   const movimientos = await obtenerMovimientos();
   renderMovimientos(movimientos.slice(0, cantidadVisibleMovimientos), listaMovimientos);
   actualizarBotonVerMas(btnVerMasMovimientos, movimientos.length, cantidadVisibleMovimientos);
+
+  const hoy = new Date();
+  const anioMes = `${hoy.getFullYear()}-${String(hoy.getMonth() + 1).padStart(2, "0")}`;
+  const delMes = movimientos.filter((m) => m.fecha.startsWith(anioMes));
+  const { balance } = calcularTotalesDelMes(delMes);
+  document.getElementById("balance-resumen").textContent = `$${formatearMonto(balance)}`;
 }
 
 // ── FUNCIONES: RESUMEN MENSUAL ───────────────────────────
@@ -264,6 +288,7 @@ listaMovimientos.addEventListener("click", async (evento) => {
     renderItemsTemporal(itemsActuales, listaItemsTemp, totalTemp);
 
     idMovimientoEnEdicion = id;
+    document.getElementById("panel-form-movimiento").classList.add("abierto");
   }
 });
 
@@ -356,6 +381,38 @@ btnLogout.addEventListener("click", async () => {
   await signOut(auth);
 });
 
+//LISTENER MODO DE VISTA
+
+document.getElementById("toggle-vista").addEventListener("click", () => {
+  const actual = document.body.dataset.vista;
+  document.body.dataset.vista = actual === "completa" ? "resumen" : "completa";
+}); 
+
+// ── LISTENERS: PANELES (vista resumen) ───────────────────
+document.querySelectorAll("[data-abrir-panel]").forEach((boton) => {
+  boton.addEventListener("click", () => {
+    document.getElementById(boton.dataset.abrirPanel).classList.add("abierto");
+  });
+});
+
+document.querySelectorAll(".btn-cerrar-panel").forEach((boton) => {
+  boton.addEventListener("click", () => {
+    const panel = boton.closest(".panel-formulario");
+    panel.classList.remove("abierto");
+    panel.querySelector("form").reset();
+    idTarjetaEnEdicion = null;
+    idMovimientoEnEdicion = null;
+    itemsActuales = [];
+    renderItemsTemporal(itemsActuales, listaItemsTemp, totalTemp);
+  });
+});
+
+document.querySelectorAll(".panel-formulario form").forEach((f) => {
+  f.addEventListener("submit", () => {
+    f.closest(".panel-formulario").classList.remove("abierto");
+  });
+});
+
 // ── ARRANQUE ──────────────────────────────────────────────
 onAuthStateChanged(auth, (usuario) => {
   if (usuario) {
@@ -370,6 +427,7 @@ onAuthStateChanged(auth, (usuario) => {
     mostrarDeudas();
     mostrarTraslados();
     cargarSelectsTraslado();
+    
   } else {
     usuarioActual.textContent = "No has iniciado sesión";
     btnLogin.style.display = "inline";
